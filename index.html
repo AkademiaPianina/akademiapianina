@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Akademia Pianina - Przemysław Mucha, Pabianice</title>
+<meta name="description" content="Akademia Pianina - indywidualne lekcje gry na fortepianie dla dzieci, młodzieży i dorosłych. Przemysław Mucha, Pabianice. Tel. 665-633-086.">
+<meta name="keywords" content="nauka gry na pianinie, nauka gry na fortepianie, lekcje pianina, lekcje fortepianu, gra na pianinie, gra na fortepianie, szkoła muzyczna Pabianice, nauczyciel pianina Pabianice, korepetycje muzyczne, Akademia Pianina, Przemysław Mucha, lekcje muzyki dla dzieci, lekcje muzyki dla dorosłych">
+<meta name="author" content="Jarosław Grabowski [Jaro88PL]">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230e0c0a'/%3E%3Crect x='8' y='16' width='48' height='34' rx='3' fill='%23f4eedf'/%3E%3Cline x1='17.6' y1='16' x2='17.6' y2='50' stroke='%23d8ccae' stroke-width='1'/%3E%3Cline x1='27.2' y1='16' x2='27.2' y2='50' stroke='%23d8ccae' stroke-width='1'/%3E%3Cline x1='36.8' y1='16' x2='36.8' y2='50' stroke='%23d8ccae' stroke-width='1'/%3E%3Cline x1='46.4' y1='16' x2='46.4' y2='50' stroke='%23d8ccae' stroke-width='1'/%3E%3Crect x='15.1' y='16' width='5' height='20' rx='1' fill='%230e0c0a'/%3E%3Crect x='24.7' y='16' width='5' height='20' rx='1' fill='%230e0c0a'/%3E%3Crect x='43.9' y='16' width='5' height='20' rx='1' fill='%230e0c0a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e0c0a;
+    --bg-soft:#171310;
+    --bg-card:#1c1713;
+    --ivory:#f4eedf;
+    --ivory-dim:#c9c0ac;
+    --ivory-faint:#9a927e;
+    --gold:#c9a24b;
+    --gold-soft:#e3c878;
+    --burgundy:#7a2c3f;
+    --line: rgba(244,238,223,0.12);
+    --line-soft: rgba(244,238,223,0.07);
+    box-sizing:border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *,*::before,*::after{ box-sizing:inherit; }
+  html{
+    scroll-behavior:smooth;
+    scroll-padding-top: calc(66px + env(safe-area-inset-top,0px));
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ivory);
+    font-family:'Manrope',sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    line-height:1.08;
+    margin:0;
+    color:var(--ivory);
+    letter-spacing:-0.01em;
+  }
+  a{ color:inherit; text-decoration:none; }
+  img,svg{ max-width:100%; display:block; }
+  .wrap{
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 clamp(20px,5vw,48px);
+  }
+
+  /* ---------- background staff-line texture ---------- */
+  .staff-bg{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    opacity:.05;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--ivory) 0px, var(--ivory) 1px,
+      transparent 1px, transparent 64px
+    );
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    padding-top: env(safe-area-inset-top,0px);
+    background: rgba(14,12,10,0);
+    border-bottom:1px solid transparent;
+    transition: background .5s ease, border-color .5s ease, padding .35s ease;
+  }
+  header.scrolled{
+    background: rgba(14,12,10,0.86);
+    backdrop-filter: blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .header-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 26px clamp(20px,5vw,48px);
+    transition: padding .35s ease;
+    max-width:1180px;
+    margin:0 auto;
+  }
+  header.scrolled .header-row{ padding-top:16px; padding-bottom:16px; }
+
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .logo-icon{ flex-shrink:0; transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+  .logo:hover .logo-icon{ transform: translateY(-2px) rotate(-4deg); }
+  .logo-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1;
+    font-family:'Fraunces',serif;
+  }
+  .logo .l1{ font-size:15px; letter-spacing:.14em; color:var(--ivory-dim); font-weight:400;}
+  .logo .l2{ font-size:20px; color:var(--gold-soft); font-weight:500; margin-top:2px;}
+
+  nav.main-nav{ display:flex; gap:36px; }
+  nav.main-nav a{
+    position:relative;
+    font-size:15px;
+    color:var(--ivory-dim);
+    padding:4px 0;
+    transition: color .3s ease;
+  }
+  nav.main-nav a::after{
+    content:'';
+    position:absolute;
+    left:0; bottom:-2px;
+    width:0%; height:1px;
+    background:var(--gold-soft);
+    transition:width .35s cubic-bezier(.2,.7,.3,1);
+  }
+  nav.main-nav a:hover{ color:var(--ivory); }
+  nav.main-nav a:hover::after{ width:100%; }
+
+  .header-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:11px 20px;
+    border:1px solid var(--gold);
+    border-radius:6px;
+    font-size:14px;
+    font-weight:600;
+    color:var(--gold-soft);
+    letter-spacing:.02em;
+    transition: background .35s ease, color .35s ease, transform .25s ease, box-shadow .35s ease;
+  }
+  .header-cta:hover{
+    background:var(--gold);
+    color:#171310;
+    transform:translateY(-1px);
+    box-shadow:0 8px 24px -8px rgba(201,162,75,.55);
+  }
+  .header-cta:active{ transform:translateY(0px) scale(.98); }
+
+  .burger{
+    display:none;
+    width:38px; height:38px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:transparent;
+    position:relative;
+    z-index:101;
+    cursor:pointer;
+    padding:0;
+  }
+  .burger span{
+    content:'';
+    position:absolute;
+    left:9px; right:9px;
+    height:2px;
+    border-radius:1px;
+    background:var(--ivory);
+    transition: transform .3s ease, opacity .3s ease, top .3s ease;
+  }
+  .burger span:nth-child(1){ top:13px; }
+  .burger span:nth-child(2){ top:18px; }
+  .burger span:nth-child(3){ top:23px; }
+  .burger.open span:nth-child(1){ top:18px; transform:rotate(45deg); }
+  .burger.open span:nth-child(2){ opacity:0; }
+  .burger.open span:nth-child(3){ top:18px; transform:rotate(-45deg); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    z-index:1;
+    padding-top: calc(150px + env(safe-area-inset-top,0px));
+    padding-bottom: 100px;
+    display:grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap:40px;
+    align-items:center;
+    min-height:92vh;
+  }
+  .hero-copy .kicker{
+    font-size:14px;
+    color:var(--gold-soft);
+    font-weight:600;
+    margin-bottom:22px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    opacity:0; transform:translateY(14px);
+    animation: rise .8s .15s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .kicker .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--gold);
+    box-shadow:0 0 0 0 rgba(201,162,75,.6);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(201,162,75,.55); }
+    70%{ box-shadow:0 0 0 9px rgba(201,162,75,0); }
+    100%{ box-shadow:0 0 0 0 rgba(201,162,75,0); }
+  }
+  .hero-copy h1{
+    font-size: clamp(40px, 5.4vw, 68px);
+    max-width:12ch;
+    opacity:0; transform:translateY(18px);
+    animation: rise .9s .3s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .hero-copy h1 em{
+    font-style:italic;
+    color:var(--gold-soft);
+  }
+  .hero-copy p.lead{
+    margin-top:24px;
+    font-size:18px;
+    line-height:1.7;
+    color:var(--ivory-dim);
+    max-width:46ch;
+    opacity:0; transform:translateY(18px);
+    animation: rise .9s .48s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .enroll-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    margin-top:26px;
+    padding:9px 18px;
+    border:1px solid var(--gold);
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.03em;
+    color:var(--gold-soft);
+    opacity:0; transform:translateY(14px);
+    animation: rise .8s .56s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .enroll-badge .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--gold);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  .hero-actions{
+    margin-top:30px;
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    opacity:0; transform:translateY(18px);
+    animation: rise .9s .62s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:16px 26px;
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:.01em;
+    border-radius:6px;
+    cursor:pointer;
+    transition: transform .3s cubic-bezier(.3,.7,.3,1.4), box-shadow .35s ease, background .35s ease, color .35s ease, border-color .35s ease;
+  }
+  .btn-solid{
+    background:var(--gold);
+    color:#171310;
+    border:1px solid var(--gold);
+  }
+  .btn-solid:hover{
+    transform:translateY(-3px);
+    box-shadow:0 16px 32px -12px rgba(201,162,75,.55);
+    background:var(--gold-soft);
+    border-color:var(--gold-soft);
+  }
+  .btn-solid:active{ transform:translateY(-1px) scale(.98); }
+  .btn-ghost{
+    background:transparent;
+    color:var(--ivory);
+    border:1px solid var(--line);
+  }
+  .btn-ghost:hover{
+    border-color:var(--ivory-dim);
+    background:var(--line-soft);
+    transform:translateY(-3px);
+  }
+  .btn-ghost:active{ transform:translateY(-1px) scale(.98); }
+
+  .hero-note{
+    margin-top:44px;
+    font-size:13px;
+    color:var(--ivory-faint);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    opacity:0; transform:translateY(18px);
+    animation: rise .9s .78s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+
+  /* ---------- piano ---------- */
+  .piano-stage{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:22px;
+    opacity:0;
+    animation: rise 1s .5s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .piano-hint{
+    font-size:13px;
+    color:var(--ivory-faint);
+    letter-spacing:.03em;
+  }
+  .piano{
+    position:relative;
+    width:min(420px, 90vw);
+    height:190px;
+    filter: drop-shadow(0 30px 50px rgba(0,0,0,.55));
+  }
+  .white-keys{
+    display:flex;
+    width:100%;
+    height:100%;
+    border-radius:6px;
+    overflow:hidden;
+    border:1px solid #2a241c;
+  }
+  .wkey{
+    position:relative;
+    flex:1;
+    background: linear-gradient(to bottom, #f8f3e6, #eee6d3);
+    border-right:1px solid #d8ccae;
+    cursor:pointer;
+    transition: background .12s ease, transform .12s ease;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding-bottom:10px;
+  }
+  .wkey:last-child{ border-right:none; }
+  .wkey span{
+    font-size:10px;
+    color:#b8a374;
+    font-family:'Manrope',sans-serif;
+    opacity:0;
+    transition:opacity .25s ease;
+  }
+  .wkey:hover span{ opacity:1; }
+  .wkey:hover{ background: linear-gradient(to bottom, #fffaf0, #f4ecd9); }
+  .wkey.active{
+    background: linear-gradient(to bottom, #e8dcb8, #ddcfa2);
+    transform: translateY(3px);
+  }
+  .black-keys{
+    position:absolute;
+    top:0; left:0;
+    width:100%;
+    height:62%;
+    display:flex;
+    pointer-events:none;
+  }
+  .bkey{
+    position:absolute;
+    width:9.2%;
+    height:100%;
+    background: linear-gradient(to bottom, #2a231a, #100d09);
+    border-radius:0 0 3px 3px;
+    pointer-events:all;
+    cursor:pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,.5);
+    transition: background .12s ease, transform .12s ease;
+  }
+  .bkey:hover{ background: linear-gradient(to bottom, #3a3122, #1a1610); }
+  .bkey.active{
+    background: linear-gradient(to bottom, #4a3d28, #241d12);
+    transform: translateY(3px);
+  }
+  .ripple{
+    position:absolute;
+    bottom:0;
+    width:4px;
+    border-radius:2px;
+    background: linear-gradient(to top, rgba(201,162,75,.9), rgba(201,162,75,0));
+    pointer-events:none;
+    animation: rip .9s ease-out forwards;
+  }
+  @keyframes rip{
+    0%{ height:0%; opacity:1; }
+    60%{ height:120%; opacity:.7; }
+    100%{ height:150%; opacity:0; }
+  }
+
+  /* ---------- section shell ---------- */
+  section{ position:relative; z-index:1; }
+  .section-pad{ padding-top:120px; padding-bottom:120px; }
+  .section-head{
+    max-width:640px;
+    margin-bottom:64px;
+  }
+  .section-head .tag{
+    font-size:14px;
+    color:var(--gold-soft);
+    font-weight:600;
+    margin-bottom:16px;
+  }
+  .section-head h2{
+    font-size: clamp(30px, 3.6vw, 44px);
+  }
+  .section-head p{
+    margin-top:18px;
+    color:var(--ivory-dim);
+    font-size:17px;
+    max-width:52ch;
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- about ---------- */
+  .about{ background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .about-grid{
+    display:grid;
+    grid-template-columns: .95fr 1.05fr;
+    gap:70px;
+    align-items:center;
+  }
+  .about-figure{
+    position:relative;
+    aspect-ratio: 4/5;
+    border-radius:12px;
+    border:1px solid var(--line);
+    overflow:hidden;
+  }
+  .about-figure img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    filter:contrast(1.03);
+    transition: transform .8s cubic-bezier(.2,.7,.2,1);
+  }
+  .about-figure:hover img{ transform:scale(1.05); }
+  .about-figure .note-badge{
+    position:absolute;
+    top:16px; right:16px;
+    width:44px; height:44px;
+    border-radius:50%;
+    background:rgba(14,12,10,.55);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:22px;
+    color:var(--gold-soft);
+    z-index:1;
+  }
+  .about-figure figcaption{
+    position:absolute;
+    bottom:0; left:0; right:0;
+    padding:22px 26px;
+    background:linear-gradient(to top, rgba(14,12,10,.9), transparent);
+    color: var(--gold-soft);
+    text-align: center;
+    font-size:14px;
+  }
+  .about-copy h3{ font-size:30px; margin-bottom:6px; font-weight:700; }
+  .about-copy .role{
+    color:var(--gold-soft);
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:.02em;
+    margin-bottom:22px;
+    display:block;
+  }
+  .about-copy p{ color:var(--ivory-dim); font-size:16.5px; margin:0 0 18px; max-width:54ch; }
+  .about-copy p:last-of-type{ margin-bottom:0; }
+
+  /* ---------- offer mosaic ---------- */
+  .offer-grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:20px;
+  }
+  .offer-card{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:32px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    min-height:190px;
+    position:relative;
+    overflow:hidden;
+    transition: border-color .35s ease, transform .35s cubic-bezier(.2,.7,.2,1), background .35s ease;
+  }
+  .offer-card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background: radial-gradient(circle at 85% 10%, rgba(201,162,75,.14), transparent 55%);
+    opacity:0;
+    transition:opacity .4s ease;
+  }
+  .offer-card:hover{
+    border-color: rgba(201,162,75,.5);
+    transform:translateY(-6px);
+    background:#211b15;
+  }
+  .offer-card:hover::before{ opacity:1; }
+  .offer-card h3{
+    font-size:22px;
+    margin-bottom:10px;
+    position:relative;
+  }
+  .offer-card p{
+    color:var(--ivory-dim);
+    font-size:15px;
+    margin:0;
+    position:relative;
+  }
+  .offer-card .mark{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:15px;
+    color:var(--gold-soft);
+    margin-bottom:16px;
+    position:relative;
+  }
+  .offer-icon{
+    width:44px; height:44px;
+    border-radius:50%;
+    border:1px solid var(--gold);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gold-soft);
+    margin-bottom:18px;
+    position:relative;
+    z-index:1;
+    flex-shrink:0;
+  }
+  .o-big{ min-height:280px; justify-content:center; }
+  .price-card{
+    border-color: rgba(201,162,75,.45);
+    background: linear-gradient(160deg, #221c12, var(--bg-card) 70%);
+  }
+  .price-card h3{ color:var(--gold-soft); font-size:26px; }
+  .o-big h3{ font-size:32px; }
+
+  /* ---------- why us ---------- */
+  .why{ background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .why-list{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top:1px solid var(--line);
+  }
+  .why-item{
+    padding:36px 6px 36px 0;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    gap:22px;
+    align-items:flex-start;
+    transition: padding-left .35s cubic-bezier(.2,.7,.2,1);
+  }
+  .why-item:nth-child(odd){ border-right:1px solid var(--line); padding-right:36px; }
+  .why-item:nth-child(even){ padding-left:36px; }
+  .why-item:hover{ padding-left:46px; }
+  .why-item:nth-child(odd):hover{ padding-left:10px; padding-right:26px; }
+  .why-note{
+    flex-shrink:0;
+    width:38px; height:38px;
+    border:1px solid var(--gold);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--gold-soft);
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:18px;
+  }
+  .why-item h4{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:19px;
+    margin:0 0 6px;
+    color:var(--ivory);
+  }
+  .why-item p{ margin:0; color:var(--ivory-dim); font-size:15px; max-width:40ch; }
+
+  @media (max-width:720px){
+    .why-list{ grid-template-columns:1fr; }
+    .why-item{ padding:28px 6px; }
+    .why-item:nth-child(odd){ border-right:none; padding-right:6px; }
+    .why-item:nth-child(even){ padding-left:6px; }
+    .why-item:hover,
+    .why-item:nth-child(odd):hover{ padding-left:6px; padding-right:6px; }
+  }
+
+  /* ---------- contact ---------- */
+  .contact{
+    background:
+      radial-gradient(circle at 15% 20%, rgba(201,162,75,.08), transparent 45%),
+      linear-gradient(180deg, #100d0a, #0a0808);
+  }
+  .contact-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:60px;
+    align-items:center;
+  }
+  .contact-copy h2{ font-size: clamp(30px,3.6vw,44px); margin-bottom:22px; }
+  .contact-copy p{ color:var(--ivory-dim); font-size:16.5px; max-width:44ch; margin-bottom:34px; }
+
+  .contact-detail{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:18px 0;
+    border-top:1px solid var(--line);
+  }
+  .contact-detail:last-of-type{ border-bottom:1px solid var(--line); }
+  .contact-detail .ic{
+    width:40px; height:40px;
+    border:1px solid var(--line);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--gold-soft);
+    flex-shrink:0;
+    transition: background .3s ease, border-color .3s ease;
+  }
+  .contact-detail a.value{
+    font-size:17px;
+    color:var(--ivory);
+    transition:color .3s ease;
+  }
+  .contact-detail a.value:hover{ color:var(--gold-soft); }
+  .contact-detail .label{ font-size:13px; color:var(--ivory-faint); display:block; margin-bottom:2px; }
+
+  .staff-panel{
+    position:relative;
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    aspect-ratio: 4/5;
+  }
+  .staff-panel img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    filter:contrast(1.03) brightness(.97);
+    transition: transform .8s cubic-bezier(.2,.7,.2,1), filter .5s ease;
+  }
+  .staff-panel:hover img{
+    filter:contrast(1.05) brightness(1);
+    transform:scale(1.05);
+  }
+  .staff-panel::before{
+    content:'';
+    position:absolute;
+    top:16px; left:16px;
+    width:32px; height:32px;
+    border-top:1.5px solid var(--gold-soft);
+    border-left:1.5px solid var(--gold-soft);
+    opacity:.85;
+    z-index:2;
+    pointer-events:none;
+  }
+  .staff-panel .visit-caption{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    z-index:1;
+    padding:28px 26px 22px;
+    background: linear-gradient(to top, rgba(10,8,7,.92), rgba(10,8,7,.2) 65%, transparent);
+  }
+  .staff-panel .visit-caption .g{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:26px;
+    color:var(--gold-soft);
+    display:block;
+    margin-bottom:6px;
+  }
+  .staff-panel .visit-caption .city{
+    font-size:16px;
+    color:var(--ivory);
+    font-family:'Fraunces',serif;
+  }
+  .staff-panel .visit-caption .addr{
+    font-size:13px;
+    color:var(--ivory-dim);
+    margin-top:4px;
+  }
+
+  /* ---------- contact form ---------- */
+  .contact-form-wrap{
+    margin-top:70px;
+    padding-top:60px;
+    border-top:1px solid var(--line);
+    max-width:640px;
+  }
+  .contact-form-wrap h3{
+    font-size:26px;
+    margin-bottom:10px;
+  }
+  .form-sub{
+    color:var(--ivory-dim);
+    font-size:15px;
+    margin:0 0 32px;
+    max-width:48ch;
+  }
+  .contact-form{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+  .form-row{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .form-row label{
+    font-size:13px;
+    color:var(--ivory-faint);
+    letter-spacing:.02em;
+  }
+  .form-row input[type="text"],
+  .form-row textarea{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:13px 16px;
+    color:var(--ivory);
+    font-family:'Manrope',sans-serif;
+    font-size:15px;
+    resize:vertical;
+    transition: border-color .3s ease, background .3s ease;
+  }
+  .form-row textarea{ min-height:110px; }
+  .form-row input[type="text"]::placeholder,
+  .form-row textarea::placeholder{ color:var(--ivory-faint); }
+  .form-row input[type="text"]:focus,
+  .form-row textarea:focus{
+    outline:none;
+    border-color:var(--gold);
+    background:#211b15;
+  }
+  .method-toggle{
+    display:flex;
+    gap:10px;
+    margin-bottom:4px;
+  }
+  .method-btn{
+    padding:9px 18px;
+    font-size:14px;
+    font-weight:600;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--ivory-dim);
+    cursor:pointer;
+    transition: all .3s ease;
+  }
+  .method-btn:hover{ border-color:var(--ivory-dim); color:var(--ivory); }
+  .method-btn.active{
+    background:var(--gold);
+    border-color:var(--gold);
+    color:#171310;
+  }
+  .contact-form .btn{ align-self:flex-start; border:none; cursor:pointer; }
+  .form-note{
+    font-size:14px;
+    color:var(--gold-soft);
+    margin:0;
+    min-height:1em;
+  }
+
+  /* ---------- privacy modal ---------- */
+  .privacy-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:200;
+    background:rgba(8,7,6,0.8);
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .privacy-modal.open{ display:flex; }
+  .privacy-modal-inner{
+    position:relative;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    max-width:620px;
+    width:100%;
+    max-height:80vh;
+    overflow-y:auto;
+    padding:44px 34px 34px;
+  }
+  .privacy-modal-inner h3{
+    font-size:24px;
+    margin-bottom:20px;
+  }
+  .privacy-text p{
+    color:var(--ivory-dim);
+    font-size:14.5px;
+    line-height:1.7;
+    margin:0 0 16px;
+  }
+  .privacy-text p:last-child{ margin-bottom:0; }
+  .privacy-close{
+    position:absolute;
+    top:14px; right:14px;
+    width:34px; height:34px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--ivory-dim);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition: all .3s ease;
+  }
+  .privacy-close:hover{ border-color:var(--gold); color:var(--gold-soft); }
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:34px 0;
+  }
+  .footer-tagline{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:15px;
+    color:var(--gold-soft);
+    margin:0 0 18px;
+  }
+  .footer-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:14px;
+    font-size:13.5px;
+    color:var(--ivory-faint);
+  }
+  .footer-row a, .footer-row .footer-link{
+    color:var(--ivory-faint);
+    transition:color .3s ease;
+    background:none;
+    border:none;
+    padding:0;
+    font-family:'Manrope',sans-serif;
+    font-size:13.5px;
+    cursor:pointer;
+  }
+  .footer-row a:hover, .footer-row .footer-link:hover{ color:var(--gold-soft); }
+
+  /* ---------- mobile ---------- */
+  @media (max-width: 900px){
+    nav.main-nav{
+      position:fixed;
+      top:0; right:0;
+      height:100vh;
+      width:min(78vw,320px);
+      background:#141110;
+      border-left:1px solid var(--line);
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-start;
+      padding:0 36px;
+      gap:28px;
+      transform:translateX(100%);
+      transition:transform .45s cubic-bezier(.2,.8,.2,1);
+      z-index:99;
+    }
+    nav.main-nav.open{ transform:translateX(0); }
+    .header-cta{ display:none; }
+    .burger{ display:block; }
+    .hero{ grid-template-columns:1fr; text-align:left; padding-top: calc(120px + env(safe-area-inset-top,0px)) !important; }
+    .about-grid{ grid-template-columns:1fr; gap:44px; }
+    .about-figure{ aspect-ratio:10/10; }
+    .contact-grid{ grid-template-columns:1fr; gap:40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="staff-bg"></div>
+
+<header id="site-header">
+  <div class="header-row">
+    <a href="#top" class="logo">
+      <svg class="logo-icon" width="34" height="34" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="10" y="18" width="44" height="32" rx="3" fill="#f4eedf"/>
+        <line x1="18.8" y1="18" x2="18.8" y2="50" stroke="#d8ccae" stroke-width="1"/>
+        <line x1="27.6" y1="18" x2="27.6" y2="50" stroke="#d8ccae" stroke-width="1"/>
+        <line x1="36.4" y1="18" x2="36.4" y2="50" stroke="#d8ccae" stroke-width="1"/>
+        <line x1="45.2" y1="18" x2="45.2" y2="50" stroke="#d8ccae" stroke-width="1"/>
+        <rect x="15.8" y="18" width="6" height="18" rx="1" fill="#171310"/>
+        <rect x="24.6" y="18" width="6" height="18" rx="1" fill="#171310"/>
+        <rect x="42.2" y="18" width="6" height="18" rx="1" fill="#171310"/>
+      </svg>
+      <span class="logo-text">
+        <span class="l1">AKADEMIA</span>
+        <span class="l2">Pianina</span>
+      </span>
+    </a>
+    <nav class="main-nav" id="main-nav">
+      <a href="#nauczyciel">Nauczyciel</a>
+      <a href="#oferta">Oferta</a>
+      <a href="#dlaczego">Dlaczego ja</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <a href="tel:665633086" class="header-cta">665 633 086</a>
+    <button class="burger" id="burger" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <div class="kicker"><span class="dot"></span>Pabianice · lekcje indywidualne</div>
+      <h1>Fortepian ma swój&nbsp;język. <em>Nauczę&nbsp;Cię</em> nim mówić.</h1>
+      <p class="lead">Indywidualne lekcje gry na fortepianie dla dzieci, młodzieży i dorosłych - prowadzone przez Przemysława Muchę, nauczyciela, wokalistę, kompozytora i pianistę.</p>
+      <div class="enroll-badge"><span class="dot"></span>Zapisy otwarte</div>
+      <div class="hero-actions">
+        <a href="tel:665633086" class="btn btn-solid">Zadzwoń: 665 633 086</a>
+        <a href="#oferta" class="btn btn-ghost">Zobacz ofertę</a>
+      </div>
+      <div class="hero-note">Zajęcia stacjonarne w Pabianicach, dla dzieci, młodzieży i dorosłych</div>
+    </div>
+
+    <div class="piano-stage">
+      <div class="piano-hint">kliknij klawisze, aby usłyszeć dźwięk</div>
+      <div class="piano" id="piano">
+        <div class="white-keys" id="white-keys"></div>
+        <div class="black-keys" id="black-keys"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="nauczyciel">
+    <div class="wrap section-pad">
+      <div class="about-grid">
+        <figure class="about-figure reveal">
+          <img src="nauczyciel.jpg" alt="Przemysław Mucha - nauczyciel Akademii Pianina">
+          <span class="note-badge"><svg width="16" height="16" viewBox="0 0 24 24" style="overflow:visible"><text x="12" y="17" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="17" fill="currentColor">𝄞</text></svg></span>
+          <figcaption><strong>Przemysław Mucha</strong> - Akademia Pianina, Pabianice</figcaption>
+        </figure>
+        <div class="about-copy reveal">
+          <h3>Przemysław Mucha</h3>
+          <span class="role">Nauczyciel · Wokalista · Kompozytor · Pianista</span>
+          <p>Muzyką zajmuję się jednocześnie od strony sceny i od strony klawiatury - jako wokalista, kompozytor i pianista. To doświadczenie przekładam na sposób prowadzenia lekcji: uczę grać tak, żeby rozumieć to, co się gra, a nie tylko odtwarzać nuty.</p>
+          <p>Pracuję indywidualnie z dziećmi, młodzieżą i dorosłymi - od pierwszego kontaktu z klawiaturą po przygotowanie do egzaminów, przesłuchań i występów. Każdy program dopasowuję do wieku, poziomu i muzycznych zainteresowań ucznia.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFFER -->
+  <section id="oferta">
+    <div class="wrap section-pad">
+      <div class="section-head reveal">
+        <div class="tag">Oferta</div>
+        <h2>Zajęcia dopasowane do ucznia, nie odwrotnie</h2>
+        <p>Program, tempo i repertuar ustalane są indywidualnie - niezależnie od tego, czy dopiero zaczynasz, czy wracasz do fortepianu po latach przerwy.</p>
+      </div>
+
+      <div class="offer-grid reveal">
+        <div class="offer-card o-big">
+          <div class="offer-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
+          <div class="mark">podstawa programu</div>
+          <h3>Lekcje indywidualne gry na fortepianie</h3>
+          <p>Dla dzieci, młodzieży i dorosłych - od podstaw po poziom zaawansowany, w tempie dopasowanym do ucznia.</p>
+        </div>
+        <div class="offer-card price-card">
+          <div class="offer-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11 17h2v-1h1c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1h-3v-1h4V8h-2V7h-2v1h-1c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h3v1H8v2h2v1zM12 22C6.49 22 2 17.51 2 12S6.49 2 12 2s10 4.49 10 10-4.49 10-10 10zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8z"/></svg></div>
+          <div class="mark">cennik</div>
+          <h3>30 zł / 30 min &nbsp;·&nbsp; 60 zł / 60 min</h3>
+          <p>Doskonała oferta jak na indywidualną naukę gry na pianinie - bez ukrytych kosztów, płatność za pojedynczą lekcję.</p>
+        </div>
+        <div class="offer-card o-a">
+          <div class="offer-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
+          <h3>Przygotowanie do występów, konkursów i egzaminów</h3>
+          <p>Repertuar i technika dobrane pod konkretny występ, przesłuchanie, egzamin lub konkurs.</p>
+        </div>
+        <div class="offer-card o-b">
+          <div class="offer-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg></div>
+          <h3>Program dopasowany do poziomu</h3>
+          <p>Od podstaw i dla początkujących po poziom zaawansowany.</p>
+        </div>
+        <div class="offer-card o-c">
+          <div class="offer-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg></div>
+          <h3>Dyplom na koniec roku</h3>
+          <p>Podsumowanie postępów i osiągnięć ucznia po roku nauki.</p>
+        </div>
+        <div class="offer-card o-d">
+          <div class="offer-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+          <h3>Zajęcia w Pabianicach</h3>
+          <p>Możesz przyjść osobiście lub umówić wizytę telefonicznie.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="why" id="dlaczego">
+    <div class="wrap section-pad">
+      <div class="section-head reveal">
+        <div class="tag">Dlaczego ja</div>
+        <h2>Nauka, która trzyma się słuchu, nie tylko nut</h2>
+      </div>
+
+      <div class="why-list reveal">
+        <div class="why-item">
+          <div class="why-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
+          <div><h4>Indywidualne podejście</h4><p>Program budowany wokół możliwości i tempa konkretnego ucznia.</p></div>
+        </div>
+        <div class="why-item">
+          <div class="why-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
+          <div><h4>Doświadczenie sceniczne</h4><p>Prowadzący czynnie występuje i komponuje - uczy praktyki, nie tylko teorii.</p></div>
+        </div>
+        <div class="why-item">
+          <div class="why-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
+          <div><h4>Elastyczne terminy</h4><p>Godziny zajęć ustalane telefonicznie, dopasowane do grafiku ucznia.</p></div>
+        </div>
+        <div class="why-item">
+          <div class="why-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
+          <div><h4>Każdy poziom</h4><p>Od pierwszego kontaktu z klawiaturą po przygotowanie do egzaminów.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="kontakt">
+    <div class="wrap section-pad">
+      <div class="contact-grid">
+        <div class="contact-copy reveal">
+          <h2>Umów pierwszą lekcję</h2>
+          <p>Napisz lub zadzwoń, żeby ustalić termin i porozmawiać o programie zajęć.</p>
+
+          <div class="contact-detail">
+            <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+            <div><span class="label">Telefon</span><a class="value" href="tel:665633086">665 633 086</a></div>
+          </div>
+          <div class="contact-detail">
+            <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+            <div><span class="label">E-mail</span><a class="value" href="mailto:akademiapianina56@gmail.com">akademiapianina56@gmail.com</a></div>
+          </div>
+          <div class="contact-detail">
+            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+            <div><span class="label">Adres</span><a class="value" href="https://share.google/H7WW7qGkd7KwgPmZz" target="_blank" rel="noopener">ul. 20-go Stycznia 60/6, 95-200 Pabianice</a></div>
+          </div>
+        </div>
+
+        <div class="staff-panel reveal">
+          <img src="akademia.jpg" alt="Wejście do Akademii Pianina - witryna przy ul. 20-go Stycznia 60/6 w Pabianicach">
+          <div class="visit-caption">
+            <span class="g"><svg width="20" height="20" viewBox="0 0 24 24" style="overflow:visible"><text x="12" y="17" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="19" fill="currentColor">𝄞</text></svg></span>
+            <div class="city">Zapraszam do Akademii</div>
+            <div class="addr">ul. 20-go Stycznia 60/6, 95-200 Pabianice</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-wrap reveal">
+        <h3>Napisz wiadomość</h3>
+        <p class="form-sub">Podaj imię i sposób kontaktu, jaki Ci odpowiada - oddzwonię lub odpiszę mailem.</p>
+        <form id="contact-form" class="contact-form">
+          <div class="form-row">
+            <label for="cf-name">Imię</label>
+            <input type="text" id="cf-name" name="name" required placeholder="Twoje imię">
+          </div>
+
+          <div class="form-row">
+            <label>Jak się skontaktować?</label>
+            <div class="method-toggle">
+              <button type="button" class="method-btn active" data-method="phone">Telefon</button>
+              <button type="button" class="method-btn" data-method="email">E-mail</button>
+            </div>
+            <input type="text" id="cf-contact" name="contact" required placeholder="Twój numer telefonu">
+          </div>
+
+          <div class="form-row">
+            <label for="cf-message">Wiadomość</label>
+            <textarea id="cf-message" name="message" required placeholder="Napisz kilka słów - np. dla kogo szukasz lekcji i w jakich godzinach."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-solid">Wyślij wiadomość</button>
+          <p class="form-note" id="cf-status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="footer-tagline">Rozwijam talent i pasję do muzyki</p>
+    <div class="footer-row">
+      <span>© 2026 Akademia Pianina - Przemysław Mucha</span>
+      <a href="tel:665633086">665 633 086</a>
+      <button type="button" class="footer-link" id="privacy-link">Polityka prywatności i RODO</button>
+    </div>
+  </div>
+</footer>
+
+<div class="privacy-modal" id="privacy-modal">
+  <div class="privacy-modal-inner">
+    <button class="privacy-close" id="privacy-close" aria-label="Zamknij"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg></button>
+    <h3>Polityka prywatności i RODO</h3>
+    <div class="privacy-text">
+      <p>Administratorem danych osobowych przekazywanych za pośrednictwem formularza kontaktowego na tej stronie jest Przemysław Mucha, prowadzący Akademię Pianina, ul. 20-go Stycznia 60/6, 95-200 Pabianice.</p>
+      <p>Dane podane w formularzu - imię, numer telefonu lub adres e-mail oraz treść wiadomości - służą wyłącznie do udzielenia odpowiedzi na przesłane zapytanie i nie są przekazywane podmiotom trzecim.</p>
+      <p>Podstawą przetwarzania danych jest zgoda wyrażona poprzez wysłanie wiadomości (art. 6 ust. 1 lit. a RODO).</p>
+      <p>Masz prawo wglądu do swoich danych, ich poprawiania oraz usunięcia w każdym momencie - wystarczy napisać na adres akademiapianina56@gmail.com.</p>
+      <p>Strona nie wykorzystuje plików cookies do celów marketingowych ani nie prowadzi profilowania użytkowników.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // header shrink on scroll
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive:true });
+
+  // mobile nav
+  const burger = document.getElementById('burger');
+  const nav = document.getElementById('main-nav');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    nav.classList.toggle('open');
+  });
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    burger.classList.remove('open');
+    nav.classList.remove('open');
+  }));
+
+  document.addEventListener('click', (e) => {
+    if (!nav.classList.contains('open')) return;
+    if (nav.contains(e.target) || burger.contains(e.target)) return;
+    burger.classList.remove('open');
+    nav.classList.remove('open');
+  });
+
+  // precise anchor scrolling - accounts for the header's compact (scrolled) height,
+  // since that's the height it will have once the page has scrolled away from the top
+  const headerRow = header.querySelector('.header-row');
+  function getHeaderOffset(){
+    const wasScrolled = header.classList.contains('scrolled');
+    const prevTransition = headerRow.style.transition;
+    headerRow.style.transition = 'none';
+    if (!wasScrolled) header.classList.add('scrolled');
+    void headerRow.offsetHeight; // force layout with the new (untransitioned) state
+    const h = header.getBoundingClientRect().height;
+    if (!wasScrolled) header.classList.remove('scrolled');
+    void headerRow.offsetHeight; // force layout again before re-enabling the transition
+    headerRow.style.transition = prevTransition;
+    return h;
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const id = link.getAttribute('href').slice(1);
+      const target = id ? document.getElementById(id) : null;
+      if (!target) return;
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.scrollY - getHeaderOffset();
+      window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+    });
+  });
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold:.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // --- interactive piano ---
+  const whiteNotes = [
+    {n:'C4', f:261.63}, {n:'D4', f:293.66}, {n:'E4', f:329.63}, {n:'F4', f:349.23},
+    {n:'G4', f:392.00}, {n:'A4', f:440.00}, {n:'B4', f:493.88}, {n:'C5', f:523.25}
+  ];
+  const blackNotes = [
+    {n:'C#4', f:277.18, after:0},
+    {n:'D#4', f:311.13, after:1},
+    {n:'F#4', f:369.99, after:3},
+    {n:'G#4', f:415.30, after:4},
+    {n:'A#4', f:466.16, after:5}
+  ];
+
+  const whiteWrap = document.getElementById('white-keys');
+  const blackWrap = document.getElementById('black-keys');
+  const pianoEl = document.getElementById('piano');
+
+  whiteNotes.forEach(note => {
+    const k = document.createElement('div');
+    k.className = 'wkey';
+    k.dataset.freq = note.f;
+    k.innerHTML = `<span>${note.n.replace('4','').replace('5','')}</span>`;
+    whiteWrap.appendChild(k);
+  });
+
+  const whiteKeyEls = whiteWrap.querySelectorAll('.wkey');
+  blackNotes.forEach(note => {
+    const k = document.createElement('div');
+    k.className = 'bkey';
+    k.dataset.freq = note.f;
+    const wkey = whiteKeyEls[note.after];
+    const leftPct = ((note.after + 1) / whiteNotes.length) * 100;
+    k.style.left = `calc(${leftPct}% - 4.6%)`;
+    blackWrap.appendChild(k);
+  });
+
+  let audioCtx = null;
+  function playTone(freq){
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, now);
+
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.22, now + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.1);
+
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 1.15);
+  }
+
+  function spawnRipple(x){
+    const r = document.createElement('div');
+    r.className = 'ripple';
+    r.style.left = x + 'px';
+    pianoEl.appendChild(r);
+    r.addEventListener('animationend', () => r.remove());
+  }
+
+  function pressKey(el){
+    const freq = parseFloat(el.dataset.freq);
+    playTone(freq);
+    el.classList.add('active');
+    const rect = el.getBoundingClientRect();
+    const pianoRect = pianoEl.getBoundingClientRect();
+    spawnRipple(rect.left - pianoRect.left + rect.width/2 - 2);
+    setTimeout(() => el.classList.remove('active'), 160);
+  }
+
+  [...whiteKeyEls, ...blackWrap.querySelectorAll('.bkey')].forEach(el => {
+    el.addEventListener('pointerdown', (e) => { e.preventDefault(); pressKey(el); });
+  });
+
+  // --- contact form ---
+  const methodBtns = document.querySelectorAll('.method-btn');
+  const contactInput = document.getElementById('cf-contact');
+  let currentMethod = 'phone';
+
+  methodBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      methodBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentMethod = btn.dataset.method;
+      contactInput.placeholder = currentMethod === 'phone' ? 'Twój numer telefonu' : 'Twój adres e-mail';
+      contactInput.type = 'text';
+    });
+  });
+
+  const contactForm = document.getElementById('contact-form');
+  const cfStatus = document.getElementById('cf-status');
+
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('cf-name').value.trim();
+    const contact = contactInput.value.trim();
+    const message = document.getElementById('cf-message').value.trim();
+
+    if (!name || !contact || !message) return;
+
+    const methodLabel = currentMethod === 'phone' ? 'Telefon' : 'E-mail';
+    const subject = `Wiadomość ze strony - ${name}`;
+    const body = `Imię: ${name}\n${methodLabel}: ${contact}\n\nWiadomość:\n${message}`;
+
+    const mailtoLink = `mailto:akademiapianina56@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+
+    cfStatus.textContent = 'Otwieram Twój program pocztowy…';
+  });
+
+  // --- privacy modal ---
+  const privacyLink = document.getElementById('privacy-link');
+  const privacyModal = document.getElementById('privacy-modal');
+  const privacyClose = document.getElementById('privacy-close');
+
+  privacyLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    privacyModal.classList.add('open');
+  });
+  privacyClose.addEventListener('click', () => privacyModal.classList.remove('open'));
+  privacyModal.addEventListener('click', (e) => {
+    if (e.target === privacyModal) privacyModal.classList.remove('open');
+  });
+</script>
+
+</body>
+</html>
